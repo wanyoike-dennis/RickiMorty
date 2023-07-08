@@ -1,5 +1,6 @@
 package com.example.rickimorty.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.rickimorty.MortyApplication
 import com.example.rickimorty.ui.homepage.RecyclerAdapter
 import com.example.rickimorty.data.models.CharacterDomain
@@ -42,6 +46,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
             setUpRecycler()
+
     }
 
     override fun onDestroyView() {
@@ -51,6 +56,31 @@ class HomeFragment : Fragment() {
 
 
     private fun setUpRecycler(){
+        val layoutManager = LinearLayoutManager(requireContext())
+        val adapter = RecyclerAdapter()
+        binding?.recyclerView?.adapter = adapter
+        binding?.recyclerView?.layoutManager= layoutManager
+        binding?.recyclerView?.addOnScrollListener(object:RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                //check if scrolling up or down
+                if (dy > 0){
+                    //Scrolling down
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                    //check if reached the last items
+                    if (visibleItemCount + firstVisibleItemPosition
+                        >= totalItemCount && firstVisibleItemPosition >= 0){
+                        viewModel.loadNextCharacters()
+                    }
+
+                }
+            }
+        })
+
+
         viewModel.isLoading.observe(this.viewLifecycleOwner){
             isLoading ->
             binding?.progressBar?.visibility =
@@ -61,18 +91,41 @@ class HomeFragment : Fragment() {
                 }
         }
 
-        val adapter = RecyclerAdapter()
-        binding?.recyclerView?.adapter = adapter
+
+
+
         if (Network.isNetworkAvailable(requireContext())) {
             viewModel.characters.observe(this.viewLifecycleOwner) { characters ->
                 characters.let {
                     adapter.submitList(it as MutableList<CharacterDomain>)
                 }
             }
+
         }
         else{
             Toast.makeText(requireContext(),"No internet connection",Toast.LENGTH_LONG).show()
         }
     }
+    private fun onScroll(){
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding?.recyclerView?.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                //check if scrolling up or down
+                if (dy > 0){
+                    //Scrolling down
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
+                    //check if reached the last items
+                    if (visibleItemCount + firstVisibleItemPosition
+                        >= totalItemCount && firstVisibleItemPosition >= 0){
+                            viewModel.loadNextCharacters()
+                    }
+
+                }
+            }
+        })
+    }
 }

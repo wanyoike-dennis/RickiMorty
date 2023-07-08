@@ -34,14 +34,14 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
         private const val TAG = "MovieViewModel"
     }
 
-     fun getAllCharacters(){
+     private fun getAllCharacters(){
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val charactersFromDb = repository.getMoviesFromDb()
                 try {
                     _isLoading.postValue(true)
                     if (charactersFromDb.isEmpty()) {
-                        val charactersFromApi = repository.getDataFromApi()
+                        val charactersFromApi = repository.getDataFromApi(page.value!!)
                         repository.cacheCharacters(charactersFromApi)
                         _characters.postValue(charactersFromApi)
                         _isLoading.postValue(false)
@@ -63,6 +63,25 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
 
     fun currentPage() : Int {
         return page.value!!
+    }
+
+    fun loadNextCharacters(){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                try {
+                    _isLoading.postValue(true)
+                    page.postValue(page.value!!.inc())
+                    val list = repository.getDataFromApi(page.value!!)
+                    repository.cacheCharacters(list)
+                    _characters.postValue(list)
+                    _isLoading.postValue(false)
+                } catch (e:Exception){
+                    Log.e(TAG,"failed to fetch characters",e)
+                }
+
+
+            }
+        }
     }
 
 }

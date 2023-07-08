@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
@@ -14,7 +15,7 @@ private val retrofit = Retrofit.Builder()
 interface RickMortyService{
     // get character
     @GET("character")
-    suspend fun getCharacter():Response<ApiResponse>
+    suspend fun getCharacter(@Query("page") page:Int):Response<ApiResponse>
 
 }
 

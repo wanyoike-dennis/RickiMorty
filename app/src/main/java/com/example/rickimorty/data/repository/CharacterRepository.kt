@@ -9,8 +9,8 @@ import retrofit2.HttpException
 
 class CharacterRepository(private val apiService: MortyApi, private val dao: CharacterDao) {
 
-    suspend fun getDataFromApi() : List<CharacterDomain>{
-        val response = apiService.retrofitService.getCharacter()
+    suspend fun getDataFromApi(page:Int) : List<CharacterDomain>{
+        val response = apiService.retrofitService.getCharacter(page)
         if (response.isSuccessful){
             return response.body()?.results ?: emptyList()
         }
