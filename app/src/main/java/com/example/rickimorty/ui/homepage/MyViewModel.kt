@@ -1,5 +1,7 @@
 package com.example.rickimorty.ui.homepage
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,27 +39,6 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
                 repository.cacheCharacters(charactersFromDb)
                 _characters.postValue(charactersFromDb)
                 _isLoading.postValue(false)
-
-                /*
-                val charactersFromDb = repository.getMoviesFromDb()
-                try {
-                    _isLoading.postValue(true)
-                    if (charactersFromDb.isEmpty()) {
-                        val charactersFromApi = repository.getDataFromApi(page.value!!)
-                        repository.cacheCharacters(charactersFromApi)
-                        _characters.postValue(charactersFromApi)
-                        _isLoading.postValue(false)
-                    } else {
-                        _isLoading.postValue(true)
-                        _characters.postValue(charactersFromDb)
-                        _isLoading.postValue(false)
-                    }
-
-                } catch (e: Exception) {
-                    Log.e(TAG, "failed to fetch characters", e)
-                }
-
-                 */
             }
         }
     }
@@ -72,6 +53,7 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
     fun loadNextCharacters(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
+                Log.e(TAG,"loading next page")
               /*
                 try {
                     _isLoading.postValue(true)

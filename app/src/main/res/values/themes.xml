@@ -11,6 +11,7 @@
     </style>
 
 
+    <!--
     <style name="Widget.RickiMorty.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorAccent</item>
         <item name="android:theme">@style/Theme.RickiMorty</item>
@@ -18,4 +19,5 @@
 
 
     </style>
+    -->
 </resources>
