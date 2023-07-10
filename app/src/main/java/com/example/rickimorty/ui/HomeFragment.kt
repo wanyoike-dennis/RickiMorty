@@ -94,17 +94,20 @@ class HomeFragment : Fragment() {
 
 
 
-        if (Network.isNetworkAvailable(requireContext())) {
+    //    if (Network.isNetworkAvailable(requireContext())) {
             viewModel.characters.observe(this.viewLifecycleOwner) { characters ->
                 characters.let {
                     adapter.submitList(it as MutableList<CharacterDomain>)
                 }
             }
 
-        }
+    //    }
+        /*
         else{
             Toast.makeText(requireContext(),"No internet connection",Toast.LENGTH_LONG).show()
         }
+
+         */
     }
     private fun onScroll(){
         val layoutManager = LinearLayoutManager(requireContext())

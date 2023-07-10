@@ -17,7 +17,7 @@ interface CharacterDao {
     @Query("SELECT * FROM CharactersTable where name LIKE '%' || :query || '%' ")
     fun searchCharacters(query:String) : List<CharacterEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(character: List<CharacterEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -25,4 +25,7 @@ interface CharacterDao {
 
     @Delete
     suspend fun deleteCharacter(character:CharacterEntity)
+
+    @Query("DELETE FROM CharactersTable")
+    suspend fun deleteAllCharacters()
 }

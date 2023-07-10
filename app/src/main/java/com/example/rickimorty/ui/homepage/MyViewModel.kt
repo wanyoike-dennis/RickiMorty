@@ -1,9 +1,5 @@
 package com.example.rickimorty.ui.homepage
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.rickimorty.data.models.CharacterDomain
 import com.example.rickimorty.local.dao.CharacterDao
 import com.example.rickimorty.data.repository.CharacterRepository
-import com.example.rickimorty.utils.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +32,13 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
      private fun getAllCharacters(){
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                _isLoading.postValue(true)
+                val charactersFromDb = repository.cachedData(page.value!!)
+                repository.cacheCharacters(charactersFromDb)
+                _characters.postValue(charactersFromDb)
+                _isLoading.postValue(false)
+
+                /*
                 val charactersFromDb = repository.getMoviesFromDb()
                 try {
                     _isLoading.postValue(true)
@@ -54,6 +56,8 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
                 } catch (e: Exception) {
                     Log.e(TAG, "failed to fetch characters", e)
                 }
+
+                 */
             }
         }
     }
@@ -68,6 +72,7 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
     fun loadNextCharacters(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
+              /*
                 try {
                     _isLoading.postValue(true)
                     page.postValue(page.value!!.inc())
@@ -79,9 +84,13 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
                     Log.e(TAG,"failed to fetch characters",e)
                 }
 
-
+*/
             }
+
+
         }
+
+
     }
 
 }
