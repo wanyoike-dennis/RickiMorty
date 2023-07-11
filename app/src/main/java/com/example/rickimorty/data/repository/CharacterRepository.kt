@@ -50,6 +50,10 @@ class CharacterRepository(private val apiService: MortyApi, private val dao: Cha
         dao.insert(characterEntity)
     }
 
+    suspend fun searchCharacters(query: String): List<CharacterDomain> {
+        return dao.searchCharacters(query).map { it.toDomain() }
+    }
+
     /*
 
     suspend fun updateCharactersList(page:Int) : List<CharacterDomain>{

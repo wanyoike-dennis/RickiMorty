@@ -59,6 +59,18 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
             }
         }
     }
+
+    fun searchCharacter(query:String){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                _isLoading.postValue(true)
+                val results = repository.searchCharacters(query)
+                _characters.postValue(results)
+                _isLoading.postValue(false)
+
+            }
+        }
+    }
 }
 
 
