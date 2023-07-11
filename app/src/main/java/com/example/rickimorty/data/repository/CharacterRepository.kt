@@ -42,7 +42,6 @@ class CharacterRepository(private val apiService: MortyApi, private val dao: Cha
          val list = getDataFromDb(page)
         characterList.clear()
         characterList.addAll(list)
-
         return characterList
     }
 

@@ -14,6 +14,8 @@ import com.example.rickimorty.data.models.CharacterDomain
 
 class RecyclerAdapter :
     ListAdapter<CharacterDomain, RecyclerAdapter.MyViewHolder>(CharacterDiffCallback()) {
+
+    private var characterList : List<CharacterDomain> = emptyList()
      class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
          private val image:ImageView = itemView.findViewById(R.id.img_character)
         private val characterName:TextView = itemView.findViewById(R.id.txt_title)
@@ -39,6 +41,11 @@ class RecyclerAdapter :
             location.text= character.location.name
 
         }
+    }
+
+    fun setCharacterList(character: List<CharacterDomain>){
+        characterList=character
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)

@@ -1,7 +1,6 @@
 package com.example.rickimorty.ui.homepage
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,9 +21,8 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading:LiveData<Boolean> = _isLoading
 
-    val page = MutableLiveData(0)
-
-
+    private val _page = MutableLiveData(1)
+    val page:LiveData<Int> = _page
 
 
     companion object{
@@ -35,7 +33,7 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _isLoading.postValue(true)
-                val charactersFromDb = repository.cachedData(page.value!!)
+                val charactersFromDb = repository.cachedData(_page.value!!)
                 repository.cacheCharacters(charactersFromDb)
                 _characters.postValue(charactersFromDb)
                 _isLoading.postValue(false)
@@ -46,35 +44,21 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
         getAllCharacters()
     }
 
-    fun currentPage() : Int {
-        return page.value!!
-    }
 
     fun loadNextCharacters(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
+
+                _isLoading.postValue(true)
+                _page.postValue(_page.value!!.inc())
+                val newList= repository.getDataFromApi(_page.value!!)
+                repository.cacheCharacters(newList)
+                _characters.postValue(newList)
+                _isLoading.postValue(false)
                 Log.e(TAG,"loading next page")
-              /*
-                try {
-                    _isLoading.postValue(true)
-                    page.postValue(page.value!!.inc())
-                    val list = repository.getDataFromApi(page.value!!)
-                    repository.cacheCharacters(list)
-                    _characters.postValue(list)
-                    _isLoading.postValue(false)
-                } catch (e:Exception){
-                    Log.e(TAG,"failed to fetch characters",e)
-                }
-
-*/
             }
-
-
         }
-
-
     }
-
 }
 
 
