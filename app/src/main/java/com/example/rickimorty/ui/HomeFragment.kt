@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickimorty.MortyApplication
@@ -55,6 +56,9 @@ class HomeFragment : Fragment() {
             }
         })
 
+        binding?.floatingActionButton?.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment())
+        }
 
     }
 
