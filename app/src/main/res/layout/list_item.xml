@@ -8,13 +8,14 @@
     android:layout_marginBottom="16dp"
     >
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/transparent"
         app:cardCornerRadius="8dp"
         app:cardElevation="12dp"
         app:cardPreventCornerOverlap="true"
-        android:background="@android:color/transparent"
+        app:contentPadding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -147,6 +148,6 @@
                 app:constraint_referenced_ids="txt_status,txt_species,txt_gender,txt_origin,txt_location" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

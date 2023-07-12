@@ -12,11 +12,12 @@ import com.bumptech.glide.Glide
 import com.example.rickimorty.R
 import com.example.rickimorty.data.models.CharacterDomain
 
-class RecyclerAdapter :
+class RecyclerAdapter(private val onClick: (CharacterDomain) -> Unit) :
     ListAdapter<CharacterDomain, RecyclerAdapter.MyViewHolder>(CharacterDiffCallback()) {
 
     private var characterList : List<CharacterDomain> = emptyList()
-     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+     class MyViewHolder(itemView: View,val onClick: (CharacterDomain) -> Unit)
+         : RecyclerView.ViewHolder(itemView) {
          private val image:ImageView = itemView.findViewById(R.id.img_character)
         private val characterName:TextView = itemView.findViewById(R.id.txt_title)
          private val status:TextView = itemView.findViewById(R.id.txt_status)
@@ -30,6 +31,7 @@ class RecyclerAdapter :
 
             Glide.with(itemView)
                 .load(character.image)
+                .error(R.drawable.ic_connection_error)
                 .into(image)
 
             currentCharacter=character
@@ -41,6 +43,13 @@ class RecyclerAdapter :
             location.text= character.location.name
 
         }
+         init {
+             itemView.setOnClickListener {
+                 currentCharacter?.let{
+                     onClick(it)
+                 }
+             }
+         }
     }
 
     fun setCharacterList(character: List<CharacterDomain>){
@@ -53,7 +62,7 @@ class RecyclerAdapter :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item,parent,false)
 
-        return MyViewHolder(view)
+        return MyViewHolder(view,onClick)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
