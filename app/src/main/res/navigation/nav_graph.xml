@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.rickimorty.ui.detailspage.DetailsFragment"
-        android:label="fragment_details"
+        android:label="Character details"
         tools:layout="@layout/fragment_details" >
         <action
             android:id="@+id/action_detailsFragment_to_homeFragment"

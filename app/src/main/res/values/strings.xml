@@ -9,4 +9,6 @@
     <string name="gender">Gender:</string>
     <string name="origin">Origin:</string>
     <string name="location">Location:</string>
+    <string name="character_image">character image</string>
+    <string name="textview">TextView</string>
 </resources>

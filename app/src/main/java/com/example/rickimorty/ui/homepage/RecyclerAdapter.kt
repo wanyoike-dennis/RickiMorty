@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.rickimorty.R
 import com.example.rickimorty.data.models.CharacterDomain
 
@@ -21,10 +22,7 @@ class RecyclerAdapter(private val onClick: (CharacterDomain) -> Unit) :
          private val image:ImageView = itemView.findViewById(R.id.img_character)
         private val characterName:TextView = itemView.findViewById(R.id.txt_title)
          private val status:TextView = itemView.findViewById(R.id.txt_status)
-         private val species:TextView = itemView.findViewById(R.id.txt_species)
-         private val gender:TextView = itemView.findViewById(R.id.txt_gender)
-         private val origin:TextView = itemView.findViewById(R.id.txt_origin)
-         private val location:TextView = itemView.findViewById(R.id.txt_location)
+
         private var currentCharacter: CharacterDomain? = null
 
         fun bind(character: CharacterDomain){
@@ -37,10 +35,7 @@ class RecyclerAdapter(private val onClick: (CharacterDomain) -> Unit) :
             currentCharacter=character
             characterName.text = character.name
             status.text=character.status
-            species.text=character.species
-            gender.text=character.gender
-            origin.text=character.origin.name
-            location.text= character.location.name
+
 
         }
          init {
