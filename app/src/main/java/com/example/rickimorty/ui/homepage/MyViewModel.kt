@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rickimorty.data.models.CharacterDomain
 import com.example.rickimorty.local.dao.CharacterDao
 import com.example.rickimorty.data.repository.CharacterRepository
+import com.example.rickimorty.remote.ApiResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,8 +22,11 @@ class MyViewModel(private val repository: CharacterRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading:LiveData<Boolean> = _isLoading
 
-    private val _page = MutableLiveData(1)
+    private val _page = MutableLiveData(0)
     val page:LiveData<Int> = _page
+
+    private var nextPageUrl: String? = null
+
 
 
     companion object{

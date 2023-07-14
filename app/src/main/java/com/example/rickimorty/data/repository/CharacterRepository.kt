@@ -9,6 +9,24 @@ import com.example.rickimorty.remote.MortyApi
 import retrofit2.HttpException
 
 class CharacterRepository(private val apiService: MortyApi, private val dao: CharacterDao) {
+    private var nextPageUrl : String? = null
+    suspend fun getNextPage() : List<CharacterDomain>?{
+        return nextPageUrl?.let{ url ->
+            try{
+                val response = apiService.retrofitService.nextPage(url)
+                if (response.isSuccessful){
+                    val results = response?.body()?.results ?: emptyList()
+                    nextPageUrl = response?.body()?.info?.next
+                    results
+                } else{
+                    null
+                }
+            } catch (e:Exception){
+                null
+            }
+        }
+
+    }
 
     suspend fun getDataFromApi(page:Int) : List<CharacterDomain>{
 
